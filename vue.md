@@ -118,4 +118,27 @@
          - 不接收父组件的值 这个属性就会被放在组件外层标签当成一个属性显示在dom中 不想在dom中显示就设置
          inheritAttrs:false
          - $attrs中有所有父组件传来的值
-     - 
+     - 子向父
+       - $emit('事件名',参数)  父组件上找到子组件对这个事件进行绑定 emits:['add'] 向外触发的事件 跟props 有差不多的意义
+       - 父子组件有双向绑定时 使用v-model 在子组件标签上写上要双向绑定的数据，在子组件中接受modelValue , 在事件中写入 this.$emit(update:modelValue,更改后的数据)
+       ```js
+       <counter v-model:add-one.uppercase="count" v-model:add-two="count1"></counter>
+       //这里注意v-model 可以取不同的名字，这样就可以使用多个v-model
+       //当使用别名时这时候再自定义修饰符时子组件接受时使用 别名+Modifiers 没有别名时使用 ModelModifiers 来接受
+       props:{
+            'addOne':{
+                type:String
+            },
+            'addTwo':Number,
+            'addOneModifiers':{
+                default:()=>({})
+            }
+        },
+       ``` 
+### 插槽(slot #可以代替v-slot:)
+   - slot 中使用的数据有作用域 数据在哪里定义就是哪里的数据
+   - v-slot:插槽名字 记得写在template标签上 slot标签上定义name名字
+   - v-slot="slotProps" 这里slotProps是slot标签所有属性
+   - 父组件定义子组件时使用的
+### 动态组件和异步组件
+   - 

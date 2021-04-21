@@ -20,40 +20,29 @@
     <div id="root"></div>
 </body>
 <script>
+    const list = {
+        data(){return{
+            list:[1,2,3]
+        }},
+        template: `
+                <div>
+                    <slot v-for="(item,index) in list" :key="index" :item="item" x='1'></slot>
+                </div>
+        `
+    }
     const app = Vue.createApp({
         data(){return{
-            options: [
-                {
-                    text:'a',
-                    value:{value:'a'}
-                },
-                {
-                    text:'b',
-                    value:{value:'b'}
-                },
-                {
-                    text:'c',
-                    value:{value:'c'}
-                }
-            ],
-            message:[]
+
         }},
         template:`
-        <div>
-            {{message}}
-            <select v-model="message" multiple>
-                <option v-for="(item,index) in options" :value="item.value" :key="index">{{item.text}}</option>    
-            </select>
-        </div>
-        `
+            <list v-slot="slotProps">
+                <div>{{slotProps.x}}</div>
+            </list>
+        `,
+        components:{
+            list
+        }
     })
-
-    // app.component('demo', {
-    //     template: `
-    //         <div :class="$attrs.class">one</div>
-    //         <div :class="$attrs.class">two</div>
-    //     `
-    // })
 
     const vm = app.mount('#root')
 </script>
