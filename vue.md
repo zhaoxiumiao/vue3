@@ -141,4 +141,70 @@
    - v-slot="slotProps" 这里slotProps是slot标签所有属性
    - 父组件定义子组件时使用的
 ### 动态组件和异步组件
-   - 
+   - 动态组件: 根据数据的变化，结合component 这个标签，来随时动态切换组件的显示可以通过<keep-alive>组件进行缓存
+   - 异步组件:看一个异步组件实例 使用Vue.defineAsyncComponent() 里边是一个Promise resolve() 中写组件
+   ```js
+   asyncCommonItem:Vue.defineAsyncComponent(() =>{
+        return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                resolve({
+                    template:`
+                        <div>this is an async component</div>
+                    `
+                })
+            },4000)
+        })
+    }) 
+   ``` 
+### 遗漏的基础语法
+   - v-once
+     - 让标签只渲染一次
+   - ref 在渲染之后获取dom节点  / 组件引用的一个语法
+   - provide提供数据 inject跨越多层组件接收数据
+### 过渡和动画
+   -  transition 标签
+      -  .v-enter-from
+      -  .v-enter-active
+      -  .v-enter-to
+      -  .v-leave-from
+      -  .v-leave-active
+      -  .v-leave-to
+   - 可以使用 在transition中写入 enter-active-class = "class名" 进行animate.css库的引用  动画使用 v-enter-active 和 v-leave-active 这两个固定样式就行了
+   - 动画属性
+   ```js
+    <transition name="hello" type="animation" :duration="{enter:1000,leave:3000}" :css="false">
+    //type是以谁为准 duration设定时间
+    //:css 是用不用css
+    //js
+    @before-enter="handleBeforeEnter" el
+    @enter="handleEnter" el done
+    @after-enter="handleAfter" 
+    @before-leave="handleBeforeLeave"
+    @leave="handleLeave"
+    @after-leave="handleAfter"
+   ``` 
+   - 列表动画
+     - transition-group 多了一个 v-move 别的和transition 差不多
+   - 状态动画
+     - 状态动画说白了就是通过js不断改变数据形成的动画
+### Mixin 混入
+   - 组件data,methods 优先级高于mixin data 优先级
+   - 生命周期函数，先执行 mixin 里面的, 再执行组件里面的
+   - 自定义的属性, 组件中的属性优先级高于 mixin 属性的优先级
+   - app.mixin() 定义全局mixin
+### 自定义指令 directive
+   - 使用 app.directive() 或者 局部directives 定义自己的指令 这里边可以写生命周期函数
+### Teleport 传送门功能
+   - 有一个<teleport to="body">to 中是要去哪个标签下
+### render函数
+   - 虚拟bom js对象映射到真实dom
+   - template -> render -> h -> 虚拟dom(js对象) -> 真实dom -> 展示到页面上
+   - 用法
+   ```js
+   render(){
+        const {h} = Vue
+        return h('h'+this.level,{class:'ss'},this.$) //接收三个值分别是 tagName,属性,内容注意最后一个参数可以写成数组形式意思是进行嵌套
+    }
+   ```  
+### 插件的定义和使用(plugin 插件)
+   - 就是把通用性的功能封装起来 Vue.use(myPlugin) install(app,options) 第一个参数是实例,第二个参数是传递的参数

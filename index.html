@@ -5,13 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    /> -->
     <style>
-        .red{
-            color: red;
+        .content{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background-color: aqua;
+            width: 300px;
+            height: 300px;
         }
-        .green{
-            color: green;
+        .mask{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.5;
+            background-color: black;
+            color: #fff;
         }
+
     </style>
     <script src="https://unpkg.com/vue@next"></script>
     
@@ -20,30 +38,32 @@
     <div id="root"></div>
 </body>
 <script>
-    const list = {
-        data(){return{
-            list:[1,2,3]
-        }},
-        template: `
-                <div>
-                    <slot v-for="(item,index) in list" :key="index" :item="item" x='1'></slot>
-                </div>
-        `
-    }
-    const app = Vue.createApp({
-        data(){return{
 
-        }},
+    
+
+    const app = Vue.createApp({
         template:`
-            <list v-slot="slotProps">
-                <div>{{slotProps.x}}</div>
-            </list>
+            <my-title level="2">
+                hello world    
+            </my-title>
         `,
-        components:{
-            list
+        methods:{
+            toggle(){
+                this.show = !this.show
+            }
         }
     })
-
+    app.component('my-title',{
+        props:['level'],
+        render(){
+            const {h} = Vue
+            return h('h'+this.level,{class:'ss'},this.$)
+        }
+        // template: `
+        //     <h1 v-if="level==1"><slot /></h1>
+        //     <h2 v-if="level==2"><slot /></h2>
+        // `
+    })
     const vm = app.mount('#root')
-</script>
+</script>   
 </html>
