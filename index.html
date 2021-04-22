@@ -38,31 +38,44 @@
     <div id="root"></div>
 </body>
 <script>
+    const listRelativeEffect = ()=>{
+        const {reactive} = Vue
+        const list = reactive([])
+        function addItemToList(value){
+            return list.push(value)
+        }
+        return{addItemToList,list}
+    }
 
-    
+    const inputRelativeEffect= () =>{
+        const {ref} = Vue
+        const inputValue = ref('123')
+        function handleInputValueChange(e){
+            inputValue.value = e.target.value
+        }
+        return {inputValue, handleInputValueChange}
+    }
+
 
     const app = Vue.createApp({
-        template:`
-            <my-title level="2">
-                hello world    
-            </my-title>
-        `,
-        methods:{
-            toggle(){
-                this.show = !this.show
+        setup(){
+            const {list, addItemToList} = listRelativeEffect()
+            const {inputValue, handleInputValueChange} = inputRelativeEffect()
+            return{
+                inputValue,
+                handleInputValueChange,
+                addItemToList,
+                list
             }
-        }
-    })
-    app.component('my-title',{
-        props:['level'],
-        render(){
-            const {h} = Vue
-            return h('h'+this.level,{class:'ss'},this.$)
-        }
-        // template: `
-        //     <h1 v-if="level==1"><slot /></h1>
-        //     <h2 v-if="level==2"><slot /></h2>
-        // `
+        },
+        template: `
+            <div>
+                <input :value="inputValue" @input="handleInputValueChange"><button @click="addItemToList(inputValue)">提交</button>
+                <ul>
+                    <li v-for="(item,index) in list" :key="item">{{item}}</li>
+                </ul>
+            </div>
+        `
     })
     const vm = app.mount('#root')
 </script>   

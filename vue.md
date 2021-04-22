@@ -208,3 +208,13 @@
    ```  
 ### 插件的定义和使用(plugin 插件)
    - 就是把通用性的功能封装起来 Vue.use(myPlugin) install(app,options) 第一个参数是实例,第二个参数是传递的参数
+### Vue3中的compositionAPI
+   - setup
+   - ref, reactive,readonly,toRefs,toRef
+     - ref() 将基础类型的数据进行响应式绑定
+     - reactive() 处理非基础类型的数据
+     - readonly() 做只读处理
+     - toRefs() 对rective() 数据进行处理后在处理一下再进行结构出的值就是响应数据
+     - toRef() 
+### Composition API 开发 TodoList
+   - 
