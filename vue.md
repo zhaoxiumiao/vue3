@@ -239,5 +239,5 @@
   - onRenderTracked 每次渲染后重新收集响应式依赖
   - onRenderTriggered 每次触发页面重新渲染时自动执行
   - step 执行是在 beforeCreate和created之间
-### Composition API provide inject Ref
+### Composition API provide inject dom ref
   - 
