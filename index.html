@@ -38,42 +38,25 @@
     <div id="root"></div>
 </body>
 <script>
-    const listRelativeEffect = ()=>{
-        const {reactive} = Vue
-        const list = reactive([])
-        function addItemToList(value){
-            return list.push(value)
-        }
-        return{addItemToList,list}
-    }
-
-    const inputRelativeEffect= () =>{
-        const {ref} = Vue
-        const inputValue = ref('123')
-        function handleInputValueChange(e){
-            inputValue.value = e.target.value
-        }
-        return {inputValue, handleInputValueChange}
-    }
-
-
     const app = Vue.createApp({
+
         setup(){
-            const {list, addItemToList} = listRelativeEffect()
-            const {inputValue, handleInputValueChange} = inputRelativeEffect()
-            return{
-                inputValue,
-                handleInputValueChange,
-                addItemToList,
-                list
-            }
+            const {reactive, watch, ref,watchEffect} = Vue;
+            const objCount = reactive({count:''})
+            let hell = ref('')
+            watch([()=>objCount.count,hell],([objValue,objOld],[hellValue,hellOld])=>{
+                console.log('watch',objValue,objOld);
+                console.log('watch',hellValue, hellOld);
+            })
+            watchEffect(()=>{
+                console.log('abc');
+            })
+            return{ objCount ,hell}
         },
         template: `
             <div>
-                <input :value="inputValue" @input="handleInputValueChange"><button @click="addItemToList(inputValue)">提交</button>
-                <ul>
-                    <li v-for="(item,index) in list" :key="item">{{item}}</li>
-                </ul>
+                <input v-model="objCount.count"/>
+                <input v-model="hell"/>
             </div>
         `
     })

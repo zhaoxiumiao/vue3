@@ -217,4 +217,27 @@
      - toRefs() 对rective() 数据进行处理后在处理一下再进行结构出的值就是响应数据
      - toRef() 
 ### Composition API 开发 TodoList
-   - 
+
+### Composition API computed 计算属性
+
+### composition API watch 侦听器
+  - lazy 具备一定的惰性 最后一个参数{immediate:true}
+  - 参数可以拿到原始值和当前值
+### watchEffect
+  - 立即执行 没有惰性, immediate
+  - 不需要传递你要侦听的内容,自动感知代码依赖，不需要传很多参数，只要传递一个回调掉函数
+  - 不能获取之前数据的值
+  - 异步操作比较合适
+  - 返回值是一个毁调函数 调用毁掉函数就可以取消监听
+### Composition API 中使用生命周期函数
+  - onBeforeMount
+  - onMounted
+  - onBeforeUpdate
+  - onUpdated
+  - onBeforeUnmount
+  - onUnmountd
+  - onRenderTracked 每次渲染后重新收集响应式依赖
+  - onRenderTriggered 每次触发页面重新渲染时自动执行
+  - step 执行是在 beforeCreate和created之间
+### Composition API provide inject Ref
+  - 
