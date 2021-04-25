@@ -41,22 +41,37 @@
     const app = Vue.createApp({
 
         setup(){
-            const {reactive, watch, ref,watchEffect} = Vue;
-            const objCount = reactive({count:''})
-            let hell = ref('')
-            watch([()=>objCount.count,hell],([objValue,objOld],[hellValue,hellOld])=>{
-                console.log('watch',objValue,objOld);
-                console.log('watch',hellValue, hellOld);
+            const {ref,reactive,provide,inject} = Vue;
+            const name =ref('hello world')
+            provide(
+                'name',name)
+            provide('changeName',(value)=>{
+                name.value = value
             })
-            watchEffect(()=>{
-                console.log('abc');
-            })
-            return{ objCount ,hell}
+            return{
+                
+            }
+            
         },
         template: `
             <div>
-                <input v-model="objCount.count"/>
-                <input v-model="hell"/>
+                <child></child>
+            </div>
+        `
+    })
+    app.component('child',{
+        setup(){
+            const {ref,provide,inject} = Vue;
+            const name = inject('name')
+            const handleClick = inject('changeName')
+            return{
+                name,
+                handleClick
+            }
+        },
+        template:`
+            <div @click="handleClick('hello11')">
+                {{name}}
             </div>
         `
     })

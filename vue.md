@@ -240,4 +240,11 @@
   - onRenderTriggered 每次触发页面重新渲染时自动执行
   - step 执行是在 beforeCreate和created之间
 ### Composition API provide inject dom ref
-  - 
+
+### VueCli的使用
+  - .vue 文件就是单文件组件
+### vuex
+  - dispatch 派发一个action
+  - commit 触发一个 mutation
+  - 在mutation 中改变数据
+  - mutation action 一个是同步一个是异步
