@@ -111,8 +111,8 @@ export default {
   margin-bottom: .12rem;
   height: .32rem;
   line-height: .32rem;
-  background: #F5F5F5;
-  color: #B7B7B7;
+  background: $search_bgColor;
+  color: $search_fontColor;
   border-radius: .16rem;
   .iconfont{
     display: inline-block;
