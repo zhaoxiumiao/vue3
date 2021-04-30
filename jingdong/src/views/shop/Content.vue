@@ -1,23 +1,34 @@
 <template>
   <div class="content">
       <div class="category">
-          <div class="category__item category__item--active">全部商品</div>
-          <div class="category__item">秒杀</div>
-          <div class="category__item">新鲜水果</div>
-          <div class="category__item">休闲食品</div>
-          <div class="category__item">时令蔬菜</div>
-          <div class="category__item">肉蛋家禽</div>
+          <div 
+            :class="{'category__item': true, 'category__item--active': currentTab === item.tab}"
+            v-for="item in categories"
+            :key="item.name"
+            @click="() => handleTabClick(item.tab)"
+          >
+            {{item.name}}
+          </div>
       </div>
       <div class="product">
-          <div class="product__item">
+          <div 
+            class="product__item"
+            v-for="item in list"
+            :key="item._id"
+          >
               <img class="product__item__img" src="http://www.dell-lee.com/imgs/vue3/near.png" />
               <div class="product__item__detail">
-                  <h4 class="product__item__title">番茄250g/份</h4>
-                  <p class="product__item__sales">月售10件</p>
+                  <h4 class="product__item__title">{{item.name}}</h4>
+                  <p class="product__item__sales">月售 {{item.sales}} 件</p>
                   <p class="product__item__price">
-                      <span class="product__item__yen">&yen;</span>33.6
-                      <span class="product__item__origin">&yen;66.6</span>
+                      <span class="product__item__yen">&yen;</span>{{item.price}}
+                      <span class="product__item__origin">&yen;{{item.oldPrice}}</span>
                   </p>
+              </div>
+              <div class="product__number">
+                  <span class="product__number__minus">-</span>
+                  0
+                  <span class="product__number__plus">+</span>
               </div>
           </div>
       </div>
@@ -25,12 +36,58 @@
 </template>
 
 <script>
-export default {
+import { reactive, toRefs, ref, watchEffect } from 'vue'
+import { useRoute } from 'vue-router'
+import {get} from '../../utils/request'
 
+const categories = [
+    { name: '全部商品', tab: 'all'},
+    { name: '秒杀', tab: 'seckill'},
+    {name: '新鲜水果',tab: 'fruit'}
+]
+
+//和 Tab相关的逻辑
+const useTabEffect =() =>{
+    const currentTab = ref(categories[0].tab)
+    const handleTabClick = (tab) => {
+        currentTab.value = tab
+    }
+    return { currentTab,  handleTabClick}
+}
+//和商品列表相关的数据
+const useCurrentListEffect = (currentTab) =>{
+    const route = useRoute()
+    const shopId = route.params.id
+    const content = reactive({ list: [] })
+
+    const getContentData = async () =>{
+        const result = await get(`/api/shop/${shopId}/products`,{
+            tab: currentTab.value
+        })
+        if(result.errno === 0 && result.data.length){
+            content.list = result.data
+        }
+    }
+
+    watchEffect(()=>{ getContentData() })
+    const {list} = toRefs(content)
+    return {list}
+}
+
+export default {
+    name: 'Content',
+    setup() {
+        const { currentTab,  handleTabClick} = useTabEffect()
+        const { list } = useCurrentListEffect(currentTab)
+        // const { contentList, currentTab } = toRefs(data)
+        return {list, categories, handleTabClick, currentTab}
+    }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../style/viriables.scss';
+@import '../../style/mixins.scss';
 .content{
     display: flex;
     position: absolute;
@@ -43,14 +100,14 @@ export default {
     overflow-y:scroll;
     height: 100%;
     width: .76rem;
-    background: #f5f5f5;
+    background: $search_bgColor;
     &__item{
         line-height: .4rem;
         text-align: center;
         font-size: .14rem;
-        color: #333;
+        color:$content-fontcolor;
         &--active{
-            background: #fff;
+            background: $bgColor;
         }
     }
 }
@@ -58,10 +115,14 @@ export default {
     overflow-y: scroll;
     flex: 1;
     &__item{
+        position: relative;
         display: flex;
         padding: .12rem 0;
         margin: 0 .16rem;
-        border-bottom: .01rem solid #FFF;
+        border-bottom: .01rem solid $content-bgColor;
+        &__detail{
+            overflow: hidden;
+        }
         &__img{
             width: .68rem;
             height: .68rem;
@@ -71,19 +132,20 @@ export default {
             margin: 0;
             line-height: .2rem;
             font-size: .14rem;
-            color: #333;
+            color: $content-fontcolor;
+            @include ellipse;
         }
         &__sales{
             margin: .06rem 0;
             line-height: .16rem;
             font-size: .12rem;
-            color: #333;
+            color:$content-fontcolor;
         }
         &__price{
             margin: 0;
             line-height: .2rem;
             font-size: .14rem;
-            color: #E93B3B;
+            color: $hightlight-fontColor;
         }
         &__yen{
             font-size: .12rem;
@@ -92,8 +154,35 @@ export default {
             margin-left: .06rem;
             line-height: .2rem;
             font-size: .12rem;
-            color: #999;
+            color: $light-fontColor;
             text-decoration: line-through;
+        }
+        .product__number{
+            position: absolute;
+            right: 0;
+            bottom: .12rem;
+            &__minus,
+            &__plus
+            {
+                display: inline-block;
+                width: .2rem;
+                height: .2rem;
+                line-height: .16rem;
+                border-radius: 50%;
+                border: .01rem solid $medium-fontColor;
+                font-size: .2rem;
+                text-align: center;
+            }
+            &__minus{
+                border: .01rem solid $medium-fontColor;
+                color: $medium-fontColor;
+                margin-right: .05rem;
+            }
+            &__plus {
+                background: $btn-bgColor;
+                color: $bgColor;
+                margin-left: .05rem;
+            }
         }
     }
 }
