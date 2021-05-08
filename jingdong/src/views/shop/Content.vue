@@ -28,12 +28,12 @@
               <div class="product__number">
                   <span 
                     class="product__number__minus"
-                    @click="()=>{lessItemToCart(shopId, item._id, item)}"
+                    @click="()=>{changeCartItemInfo(shopId, item._id, item,-1)}"
                   >-</span>
-                    {{cartList?.[shopId]?.[item._id]?.count || 0}}
+                    {{item.count || 0}}
                   <span 
                     class="product__number__plus"
-                    @click="()=> {addItemToCart(shopId, item._id, item)}"
+                    @click="()=> {changeCartItemInfo(shopId, item._id, item,1)}"
                   >+</span>
               </div>
           </div>
@@ -44,8 +44,9 @@
 <script>
 import { reactive, toRefs, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 import {get} from '../../utils/request'
+import {useCommonCartEffect} from './commonCartEffect'
 
 const categories = [
     { name: '全部商品', tab: 'all'},
@@ -79,21 +80,16 @@ const useCurrentListEffect = (currentTab,shopId) =>{
 }
 
 //购物车逻辑
-const useCartEffect = () =>{
-    const store = useStore()
-    const {cartList} = toRefs(store.state)
-    const addItemToCart = (shopId, productId, productInfo) => {
-        store.commit('addItemToCart',{
-            shopId, productId, productInfo
-        })
-    }
-    const lessItemToCart = (shopId, productId, productInfo) => {
-        store.commit('lessItemToCart',{
-            shopId, productId, productInfo
-        })
-    }
-    return {cartList, addItemToCart, lessItemToCart}
-}
+// const useCartEffect = () =>{
+//     const store = useStore()
+//     const {cartList} = toRefs(store.state)
+//     const changeCartItemInfo = (shopId, productId, productInfo, num) => {
+//         store.commit('changeCartItemInfo',{
+//             shopId, productId, productInfo, num
+//         })
+//     }
+//     return {cartList, changeCartItemInfo}
+// }
 
 export default {
     name: 'Content',
@@ -103,10 +99,10 @@ export default {
         const { currentTab,  handleTabClick} = useTabEffect()
         const { list } = useCurrentListEffect(currentTab,shopId)
         // const { contentList, currentTab } = toRefs(data)
-        const {cartList,addItemToCart,lessItemToCart} = useCartEffect()
+        const {changeCartItemInfo} = useCommonCartEffect()
         return {
             list, categories, handleTabClick, currentTab,
-            cartList, shopId, addItemToCart, lessItemToCart
+            shopId, changeCartItemInfo
         }
     }
 }
