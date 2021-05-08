@@ -30,7 +30,7 @@
                     class="product__number__minus"
                     @click="()=>{changeCartItemInfo(shopId, item._id, item,-1)}"
                   >-</span>
-                    {{item.count || 0}}
+                    {{cartList?.[shopId]?.productList?.[item._id]?.count || 0}}
                   <span 
                     class="product__number__plus"
                     @click="()=> {changeCartItemInfo(shopId, item._id, item,1)}"
@@ -99,10 +99,10 @@ export default {
         const { currentTab,  handleTabClick} = useTabEffect()
         const { list } = useCurrentListEffect(currentTab,shopId)
         // const { contentList, currentTab } = toRefs(data)
-        const {changeCartItemInfo} = useCommonCartEffect()
+        const {changeCartItemInfo, cartList} = useCommonCartEffect()
         return {
             list, categories, handleTabClick, currentTab,
-            shopId, changeCartItemInfo
+            shopId, changeCartItemInfo, cartList
         }
     }
 }
