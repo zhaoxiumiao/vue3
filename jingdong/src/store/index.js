@@ -7,7 +7,8 @@ const setLocalCartList = (state) =>{
 }
 
 const getLocalCartList = () =>{
-  return JSON.parse(localStorage.cartList) || {}
+  console.log(localStorage.cartList);
+  return JSON.parse(localStorage.getItem('cartList')) || {}
 }
 
 export default createStore({

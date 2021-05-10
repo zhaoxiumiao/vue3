@@ -38,7 +38,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: .49rem;
+  // height: .49rem; //这里加上高会页面会有滚动条,暂时还不知道为什么
   border-top: .01rem solid $content-bgColor;
   color: $content-fontcolor;
   &__item{
