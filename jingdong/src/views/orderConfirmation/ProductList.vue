@@ -46,7 +46,6 @@ export default {
 .products{
     margin: .16rem .18rem .55rem .18rem;
     background: $bgColor;
-    
     &__title{
         padding: .16rem 0 0 .16rem;
         font-size: .16rem;
@@ -54,7 +53,8 @@ export default {
     }
     &__list{
         overflow-y: scroll;
-        max-height: 3.72rem;
+        max-height: 3.5rem;
+        margin-bottom: .8rem;
     }
     &__item{
         position: relative;

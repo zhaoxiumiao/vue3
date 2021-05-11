@@ -41,6 +41,7 @@ import {useStore} from 'vuex'
 import { post } from '../../utils/request'
 import { useRoute, useRouter } from 'vue-router'
 
+//下单逻辑
 const useMakeOrderEffect = (productList, shopName, shopId) =>{
     const router = useRouter()
     const store = useStore()
@@ -71,21 +72,23 @@ const useMakeOrderEffect = (productList, shopName, shopId) =>{
     return { handleConfirmOrder }
 }
 
+//蒙层展示逻辑
+const useShowMaskEffect = () =>{
+    const showConfirm = ref(false)
+    const handleSubmitClick = (status) =>{
+        showConfirm.value = status
+    }
+    return {handleSubmitClick, showConfirm}
+}
+
 export default {
     name: 'Order',
     setup(){
-        
         const route = useRoute()
-        
-        const showConfirm = ref(false)
-
         const shopId = parseInt(route.params.id)
         const { calculations, shopName,productList} = useCommonCartEffect(shopId)
-
-        const handleSubmitClick = (status) =>{
-            showConfirm.value = status
-        }
         const {handleConfirmOrder} = useMakeOrderEffect(productList, shopName, shopId)
+        const {handleSubmitClick, showConfirm} = useShowMaskEffect()
         
         return { calculations, handleConfirmOrder, showConfirm, handleSubmitClick}
     },
@@ -158,7 +161,7 @@ export default {
             font-size: .14rem;
             &--first{
                 margin-right: .12rem;
-                border: 1px solid #4FB0F9;
+                border: .01rem solid #4FB0F9;
                 color: #4FB0F9;
             }
             &--last{

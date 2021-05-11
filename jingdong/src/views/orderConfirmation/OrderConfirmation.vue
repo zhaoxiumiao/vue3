@@ -29,6 +29,6 @@ export default {
     top: 0;
     bottom: 0;
     background: #eee;
-    // overflow-y: scroll;
+    overflow: hidden;
 }
 </style>
