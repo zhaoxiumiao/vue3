@@ -41,7 +41,7 @@ import {useStore} from 'vuex'
 import { post } from '../../utils/request'
 import { useRoute, useRouter } from 'vue-router'
 
-const useMakeOrderEffect = (productList, shopName) =>{
+const useMakeOrderEffect = (productList, shopName, shopId) =>{
     const router = useRouter()
     const store = useStore()
     const handleConfirmOrder = async (isCanceled)=>{
@@ -85,7 +85,7 @@ export default {
         const handleSubmitClick = (status) =>{
             showConfirm.value = status
         }
-        const {handleConfirmOrder} = useMakeOrderEffect(productList, shopName)
+        const {handleConfirmOrder} = useMakeOrderEffect(productList, shopName, shopId)
         
         return { calculations, handleConfirmOrder, showConfirm, handleSubmitClick}
     },
