@@ -43,7 +43,8 @@ const useNearbyListEffect = () =>{
   const getNearbyList = async () =>{
     const result = await get('/api/shop/hot-list')
     console.log(result);
-    if(result.errno === 0 && result.data.length){//result?.data?.errno不知道什么意思
+    if(result.errno === 0 && result.data.length){
+        //result?.data?.errno 有点类似与三元运算符
         nearbyList.value = result.data
     } 
   }

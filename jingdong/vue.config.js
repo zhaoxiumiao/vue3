@@ -5,5 +5,5 @@
 // * 容易出现问题的就是下面的配置
 
 module.exports = {
-    publicPath: '/jingdong'
+    publicPath: '/'
 }
